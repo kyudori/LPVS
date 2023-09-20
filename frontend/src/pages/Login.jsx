@@ -8,10 +8,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../css/Login_style.css";
-
-export const KAKAO_AUTH_URL = "http://localhost:7896/oauth2/authorization/kakao";
-export const NAVER_AUTH_URL = "http://localhost:7896/oauth2/authorization/naver";
-export const GOOGLE_AUTH_URL = "http://localhost:7896/oauth2/authorization/google";
+export const KAKAO_AUTH_URL ="http://localhost:7896/oauth2/authorization/kakao";
+export const NAVER_AUTH_URL ="http://localhost:7896/oauth2/authorization/naver";
+export const GOOGLE_AUTH_URL ="http://localhost:7896/oauth2/authorization/google";
 
 export const Login = () => {
   return (

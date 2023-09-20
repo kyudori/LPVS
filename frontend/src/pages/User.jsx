@@ -11,13 +11,13 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../css/User_style.css";
 
-
 export const User = () => {
 
   const navigate = useNavigate();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
+  const [userInfoChanged, setUserInfoChanged] = useState(false);
 
   const [isEditing_nickname, setIsEditing_nickname] = useState(false);
   const [isEditing_organization, setIsEditing_organization] = useState(false);
@@ -26,8 +26,6 @@ export const User = () => {
     nickname: "",
     organization: "",
   });
-  console.log(userInfo)
-
   
   useEffect(() => {
     axios.get("/login/check")
@@ -74,17 +72,18 @@ export const User = () => {
       return axios.get("/user/info");
     })
     .then((userInfoResponse) => {
+      setUserInfoChanged(true);
+      setIsEditing_nickname(false);
+      setIsEditing_organization(false);
+
       setUserInfo(userInfoResponse.data);
       console.log(userInfoResponse.data);
-  
-      setUserInfoChanged(true);
   
       if(!editedUserInfo.organization){
         alert(`User information has been updated.\nGitHubID: ${editedUserInfo.nickname}`);
       } else {
         alert(`User information has been updated.\nGitHubID: ${editedUserInfo.nickname}\nOrganization: ${editedUserInfo.organization}`);
       }
-      window.location.reload(true);
     })
     .catch((error) => {
       if (error.response && error.response.status === 409) {
@@ -94,11 +93,6 @@ export const User = () => {
       }
     });
   };
-  
-  const [userInfoChanged, setUserInfoChanged] = useState(false);
-
-  console.log(editedUserInfo)
-
 
   const handleUsernameChange = (event) => {
     setEditedUserInfo(prevState => ({
@@ -114,12 +108,23 @@ export const User = () => {
     }));
   };
 
+  const handleHistoryLinkClick = (event) => {
+    event.preventDefault();
+
+    if (!userInfo?.nickname) {
+      alert('To use service, You must enter a GitHub ID.');
+      navigate('/user/setting');
+    } else {
+      navigate(`/history/send/${userInfo.nickname}`);
+    }
+  };
+
   const handleLogoClick = (event) => {
     event.preventDefault();
 
     if (!userInfo?.nickname) {
       alert('To use service, You must enter a GitHub ID.');
-      navigate('/user/info');
+      navigate('/user/setting');
     } else {
       navigate('/home');
     }
@@ -260,6 +265,7 @@ export const User = () => {
           <div className="menu-line" />
           <div className="menu">
             <div className="overlap-6">
+              <div className="profile-border" />
                 <div className="profile">
                   <div className="overlap-group-3">
                     <img className="image" alt="Image" src="/image/png/ProfileImg.png" />
@@ -279,6 +285,14 @@ export const User = () => {
                           </div>
                         </div>
                 </div>
+              </div>
+              <div className="text-wrapper-18">
+                <Link
+                  to={`/history/send/${userInfo?.nickname}`}
+                  style={{ color: 'black', textDecoration: 'none' }}
+                  onClick={handleHistoryLinkClick}>
+                  History
+                </Link>
               </div>
           </div>
           <Link to="/home" style={{ color: 'black', textDecoration: 'none' }}>

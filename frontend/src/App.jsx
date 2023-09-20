@@ -10,6 +10,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './pages/Home';
 import Login from './pages/Login';
 import User from './pages/User';
+import History from './pages/History';
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/user/info" element={<User />} />
+          <Route path="/user/setting" element={<User />} />
+          <Route path="/history/:type/:name" element={<History />} />
         </Routes>
       </div>
     </BrowserRouter>

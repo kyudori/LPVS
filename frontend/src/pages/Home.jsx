@@ -10,6 +10,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "../css/Home_style.css";
 
+export const LPVS_SERVER = process.env.REACT_APP_LPVS_SERVER;
 export const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
@@ -86,7 +87,9 @@ export const Home = () => {
           <div className="menu-line" />
           <div className="menu">
             <div className="overlap">
-              <div className="profile-border" />
+              {isLoggedIn ? (
+                <div className="profile-border" />
+              ): null}
               <div className="profile">
                 <div className="overlap-group-2">
                   <img className="image" alt="img" src="/image/png/ProfileImg.png" />
@@ -94,7 +97,7 @@ export const Home = () => {
                     {isLoggedIn ? (
                       <span style={{ color: "black", textDecoration: "none" }}>
                         <Link
-                          to={"/user/info"}
+                          to={"/user/setting"}
                           style={{ color: "black", textDecoration: "none" }}
                         >
                           {username?.name ? (
@@ -116,6 +119,13 @@ export const Home = () => {
                 </div>
               </div>
             </div>
+            <div className="text-wrapper-7">
+            {isLoggedIn ? (
+                <Link to={`/history/send/${username?.nickname}?page=0`} style={{ color: "black", textDecoration: "none" }}>
+                 History
+                </Link>
+                 ) : null} 
+              </div>
           </div>
           <Link to={"/home"} style={{ color: "black", textDecoration: "none"}}>
             <img className="LPVS" alt="img" src="/image/png/LPVS_logo_bar.png" />
